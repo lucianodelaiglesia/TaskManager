@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Object task
 export interface Task {
+  id: number;
   title: string;
   done: boolean;
   date: Date;
@@ -17,6 +18,9 @@ export default function App() {
 
   //Tasks list
   const [tasks, setTasks] = useState<Task[]>([]);
+
+  //State to manage last id
+  const [lastId, setLastId] = useState(0);
 
   //Save persistence of data
   const storeData = async (value: Task[]) => {
@@ -32,8 +36,10 @@ export default function App() {
     try {
       const value = await AsyncStorage.getItem('mytasks');
       if (value !== null) {
-        const tasksLocal = JSON.parse(value);
-        setTasks(tasksLocal);
+        const localTasks = JSON.parse(value);
+        const highestId = Math.max(...localTasks.map(task => task.id));
+        setTasks(localTasks);
+        setLastId(highestId || 0);
       }
     } catch (e) {
       console.log(e);
@@ -48,13 +54,17 @@ export default function App() {
   //Add new task
   const addTask = () => {
     const tmp = [...tasks];
+
     const newTask = {
+      id: lastId + 1,
       title: text,
       done: false,
       date: new Date(),
     };
+
     tmp.push(newTask);
     setTasks(tmp);
+    setLastId(lastId + 1);
     storeData(tmp);
     setText('');
   };
@@ -62,7 +72,7 @@ export default function App() {
   //Change done attribute
   const markDone = (task: Task) => {
     const tmp = [...tasks];
-    const index = tmp.findIndex(e => e.title === task.title);
+    const index = tmp.findIndex(e => e.id === task.id);
     const todo = tasks[index];
     todo.done = !todo.done;
     setTasks(tmp);
@@ -72,7 +82,7 @@ export default function App() {
   //Remove task from list
   const removeFunction = (task: Task) => {
     const tmp = [...tasks];
-    const index = tmp.findIndex(e => e.title === task.title);
+    const index = tmp.findIndex(e => e.id === task.id);
     tmp.splice(index, 1);
     setTasks(tmp);
     storeData(tmp);

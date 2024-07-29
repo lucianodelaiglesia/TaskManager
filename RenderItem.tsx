@@ -15,13 +15,16 @@ export default function RenderItem({
   removeFunction,
 }: ItemProps) {
   return (
-    <View style={styles.itemContainer}>
+    <View key={item.id} style={styles.itemContainer}>
       <TouchableOpacity onPress={() => markDone(item)}>
         <Text style={item.done ? styles.textDone : styles.text}>
           {item.title}
         </Text>
         <Text style={item.done ? styles.textDone : styles.text}>
           {new Date(item.date).toLocaleDateString()}
+        </Text>
+        <Text style={item.done ? styles.textDone : styles.text}>
+          ID: {item.id}
         </Text>
       </TouchableOpacity>
       {item.done && (
