@@ -6,13 +6,13 @@ import {Task} from './App';
 interface ItemProps {
   item: Task;
   markDone: (task: Task) => void;
-  removeFunction: (task: Task) => void;
+  openModal: (task: Task) => void;
 }
 
 export default function RenderItem({
   item,
   markDone,
-  removeFunction,
+  openModal,
 }: ItemProps) {
   return (
     <View key={item.id} style={styles.itemContainer}>
@@ -30,7 +30,7 @@ export default function RenderItem({
       {item.done && (
         <TouchableOpacity
           style={styles.removeButton}
-          onPress={() => removeFunction(item)}>
+          onPress={() => openModal(item)}>
           <Text style={styles.textWhite}>Remove</Text>
         </TouchableOpacity>
       )}
