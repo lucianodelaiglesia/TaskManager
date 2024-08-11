@@ -12,6 +12,7 @@ import styles from './Styles';
 import RenderItem from './RenderItem';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-root-toast';
+import BootSplash from 'react-native-bootsplash';
 
 //Object task
 export interface Task {
@@ -22,6 +23,17 @@ export interface Task {
 }
 
 export default function App() {
+  useEffect(() => {
+    const init = async () => {
+      // …do multiple sync or async tasks
+    };
+
+    init().finally(async () => {
+      await BootSplash.hide({ fade: true });
+      console.log("BootSplash has been hidden successfully");
+    });
+  }, []);
+
   //Text input
   const [text, setText] = useState('');
 

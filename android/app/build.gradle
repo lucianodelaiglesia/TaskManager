@@ -113,6 +113,10 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    //Splashscreen
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+    implementation("androidx.core:core-splashscreen:1.0.0-beta01")
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
